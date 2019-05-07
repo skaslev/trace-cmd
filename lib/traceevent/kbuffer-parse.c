@@ -355,12 +355,15 @@ translate_data(struct kbuffer *kbuf, void *data, void **rptr,
 	type_len = type_len4host(kbuf, type_len_ts);
 	*delta = ts4host(kbuf, type_len_ts);
 
+	printf("type_len_ts: %u type_len: %u delta: %llu", type_len_ts >> 5, type_len, *delta);
 	switch (type_len) {
 	case KBUFFER_TYPE_PADDING:
+		printf(" padding\n");
 		*length = read_4(kbuf, data);
 		break;
 
 	case KBUFFER_TYPE_TIME_EXTEND:
+		printf(" time ext\n");
 		extend = read_4(kbuf, data);
 		data += 4;
 		extend <<= TS_SHIFT;
@@ -370,15 +373,18 @@ translate_data(struct kbuffer *kbuf, void *data, void **rptr,
 		break;
 
 	case KBUFFER_TYPE_TIME_STAMP:
+		printf(" type ts\n");
 		data += 12;
 		*length = 0;
 		break;
 	case 0:
+		printf(" zero\n");
 		*length = read_4(kbuf, data) - 4;
 		*length = (*length + 3) & ~3;
 		data += 4;
 		break;
 	default:
+		printf(" DEFAULT\n");
 		*length = type_len * 4;
 		break;
 	}

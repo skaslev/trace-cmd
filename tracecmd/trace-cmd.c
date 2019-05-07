@@ -99,6 +99,7 @@ struct command commands[] = {
 	{"stat", trace_stat},
 	{"options", trace_option},
 	{"show", trace_show},
+	{"convert", trace_convert},
 	{"list", trace_list},
 	{"help", trace_usage},
 	{"-h", trace_usage},
